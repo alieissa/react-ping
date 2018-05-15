@@ -1,8 +1,13 @@
 import React, {Component} from 'react'
 
 class Canvas extends Component{
+
   constructor() {
     super()
+
+    this.PADDLE_HEIGHT = 100
+    this.PADDLE_WIDTH = 10
+
     this.renderCanvas = this.renderCanvas.bind(this)
     this.handleMouseMove = this.handleMouseMove.bind(this)
   }
@@ -11,7 +16,7 @@ class Canvas extends Component{
   }
 
   componentDidMount() {
-    this.renderCanvas({x:0, y: 0})
+    this.renderCanvas(this.props.leftPlayer)
   }
 
   componentWillUpdate() {
@@ -24,8 +29,6 @@ class Canvas extends Component{
   }
 
   handleMouseMove(evt) {
-    console.log(evt.clientX - this.refs.canvasContainer.getBoundingClientRect().x)
-    console.log(evt.clientY - this.refs.canvasContainer.getBoundingClientRect().y)
     const playerLeftPos = {
       x: 0,
       y: evt.clientY - this.refs.canvasContainer.getBoundingClientRect().y
@@ -40,10 +43,10 @@ class Canvas extends Component{
     const ctx = cvs.getContext("2d")
 
     ctx.clearRect(0, 0, cvs.width, cvs.height)
-    
+
     // left player
     ctx.fillStyle = 'green';
-    ctx.fillRect(0, lPlayer.y, 20, 100);
+    ctx.fillRect(0, lPlayer.y - this.PADDLE_HEIGHT / 2, 20, 100);
 
     // right player
     ctx.fillStyle = 'blue'

@@ -1,52 +1,59 @@
-// Logarithm to find x, y position of mouse relative to canvas
-// x = evt.clientX - cvs.getBoundingClientRect().x
-// y = evt.clientY - cvs.getBoundingClientRect().y
-
-// TODO: Add player position calculation (above) to renderCanvas method
-// TODO: Create canvas component and move render logic into there
+//TODO: Map user action to dispatch
+//TODO: Activate player on join click
+//TODO: Logic for Game on/off state
+//TODO: Distinguish players from watchers
 
 import React, { Component } from 'react';
 import initializeSocket from './socket.js';
 import './App.css';
-import Canvas from './canvas'
+import Canvas from './components/canvas-container'
+import {Provider} from 'react-redux'
+import {A} from './actions'
 
 class App extends Component {
   constructor() {
     super()
+
+    this.handleJoin = this.handleJoin.bind(this)
   }
 
-  componentWillMount() {
-    initializeSocket((store) => {
-      store.subscribe(() => console.log(store.getState))
-    })
-  }
+  // componentWillMount() {
+  // }
 
-  componentDidMount() {
-    // this.renderCanvas()
-  }
+  // componentDidMount() {
+  //   // this.renderCanvas()
+  // }
+  //
+  // componentWillUpdate() {
+  //   // Redraw canvas here
+  // }
 
-  componentWillUpdate() {
-    // Redraw canvas here
-  }
+  // componentWillUnmount() {
+  //   // Destroy socket
+  // }
 
-  componentWillUnmount() {
-    // Destroy socket
-  }
 
+  handleJoin() {
+    // this.store.dispatch({
+    //   type: A.ADD_PLAYER,
+    //   payload:{
+    //     score: 0,
+    //     name: 'test',
+    //     x: 10,
+    //     y: 20
+    //   }
+    // })
+  }
 
   render() {
     return (
       <div className="App d-flex">
         <div className="d-flex flex-column justify-content-center">
           <input type="text"/>
-          <button className="btn btn-primary joiner">Join</button>
+          <button className="btn btn-primary joiner" onClick={this.handleJoin}>Join</button>
         </div>
 
-        {/* <div className="canvasContainer" onMouseMove={this.handleMouseMove}>
-          <canvas ref="canvas" width="400" height="400"></canvas>
-        </div> */}
-
-        <Canvas />
+          <Canvas />
 
         <div className="d-flex flex-column justify-content-center">
           <input type="text"/>
