@@ -1,9 +1,18 @@
-//TODO: Add game countdown state
-export const A = {
-  ADD_PLAYER: "ADD_PLAYER",
-  REMOVE_PLAYER: "REMOVE_PLAYER",
-  UPDATE_PLAYER: "UPDATE_PLAYER",
-  MOVE_BALL: "MOVE_BALL",
-  START_GAME: "START_GAME",
-  STOP_GAME: "STOP_GAME"
+import {C} from './constants'
+import {getSocket} from './socket'
+
+export const addPlayer = (side) => {
+  getSocket().emit(C.ADD_PLAYER, {})
+  
+  return {
+    type: C.ADD_PLAYER,
+    payload:   {
+        position:side,
+        id: null,
+        name: "",
+        score: 0,
+        x: -1,
+        y: -1
+    }
+  }
 }

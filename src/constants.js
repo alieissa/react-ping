@@ -1,0 +1,9 @@
+//TODO: Add game countdown state
+export const C = {
+  ADD_PLAYER: "ADD_PLAYER",
+  REMOVE_PLAYER: "REMOVE_PLAYER",
+  UPDATE_PLAYER: "UPDATE_PLAYER",
+  MOVE_BALL: "MOVE_BALL",
+  START_GAME: "START_GAME",
+  STOP_GAME: "STOP_GAME"
+}
