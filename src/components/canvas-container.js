@@ -1,5 +1,6 @@
-import Canvas from './canvas'
 import {connect} from 'react-redux'
+import Canvas from './canvas'
+import {addPlayer} from '../actions'
 
 const mapStateToProps = (state) => {
   return {
@@ -9,5 +10,13 @@ const mapStateToProps = (state) => {
   }
 }
 
-const Container = connect(mapStateToProps)(Canvas)
+const mapDispatchToProps = (dispatch) => {
+  return {
+    handleJoin: (side) => {
+      dispatch(addPlayer(side))
+    }
+  }
+}
+
+const Container = connect(mapStateToProps, mapDispatchToProps)(Canvas)
 export default Container

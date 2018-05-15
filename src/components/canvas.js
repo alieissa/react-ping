@@ -8,6 +8,12 @@ class Canvas extends Component{
     this.PADDLE_HEIGHT = 100
     this.PADDLE_WIDTH = 10
 
+    this.state = {
+      playing: false,
+      position: ''
+    }
+
+    this.handleJoin = this.handleJoin.bind(this)
     this.renderCanvas = this.renderCanvas.bind(this)
     this.handleMouseMove = this.handleMouseMove.bind(this)
   }
@@ -37,6 +43,16 @@ class Canvas extends Component{
     this.renderCanvas(playerLeftPos, {}, {})
   }
 
+  handleJoin(playerSide) {
+
+    this.setState({
+      playing: true,
+      position: playerSide
+    })
+
+    this.props.handleJoin(playerSide)
+  }
+
   renderCanvas(lPlayer, rPlayer, ball) {
     // Redraw canvas
     const cvs = this.refs.canvas
@@ -59,8 +75,19 @@ class Canvas extends Component{
 
   render() {
     return (
-      <div ref="canvasContainer" className="canvasContainer" onMouseMove={this.handleMouseMove}>
-        <canvas ref="canvas" width="400" height="400"></canvas>
+      <div className="App d-flex">
+        <div className="d-flex flex-column justify-content-center">
+          <input type="text"/>
+          <button className="btn btn-primary joiner" onClick={() => this.handleJoin("left")}>Join</button>
+          <button className="btn btn-primary joiner">Exit</button>
+        </div>
+        <div ref="canvasContainer" className="canvasContainer" onMouseMove={this.handleMouseMove}>
+          <canvas ref="canvas" width="400" height="400"></canvas>
+        </div>
+        <div className="d-flex flex-column justify-content-center">
+          <input type="text"/>
+          <button className="btn btn-primary joiner" onClick={() => this.handleJoin("right")}>Join</button>
+        </div>
       </div>
     )
   }

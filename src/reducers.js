@@ -1,14 +1,14 @@
 //TODO: Why is object spread operator not working
-import {A} from './actions'
+import {C} from './constants'
 import {combineReducers} from 'redux'
 
 const players = (state = [], {type, payload}=action) => {
   switch(type) {
-    case A.ADD_PLAYER:
+    case C.ADD_PLAYER:
       return [...state, payload]
-    case A.REMOVE_PLAYER:
+    case C.REMOVE_PLAYER:
       return state.filter(player => player.id !== payload.id)
-    case A.UPDATE_PLAYER:
+    case C.UPDATE_PLAYER:
       let otherPlayer = state.filter(player => player.id !== payload.id)
 
       return [...state, Object.assign({}, payload)]
@@ -20,7 +20,7 @@ const players = (state = [], {type, payload}=action) => {
 
 const ball = (state = {}, {type, payload} = action) => {
   switch(type) {
-    case A.MOVE_BALL:
+    case C.MOVE_BALL:
       return Object.assign({}, payload)
     default:
       return state
@@ -29,9 +29,9 @@ const ball = (state = {}, {type, payload} = action) => {
 
 const game = (state = 0, {type, payload} = action) => {
   switch(type) {
-    case A.START_GAME:
+    case C.START_GAME:
       return 2
-    case A.STOP_GAME:
+    case C.STOP_GAME:
       return 0
     default:
       return state
