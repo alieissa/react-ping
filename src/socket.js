@@ -1,7 +1,9 @@
 // TODO: Look into socket "connect" event
 import {createStore} from 'redux'
 import appReducer from './reducers'
-import {A} from './actions'
+import {C} from './constants'
+
+var socket
 
 const handleAddPlayer = () => {
   // Add player to state
@@ -28,56 +30,58 @@ const handleStopGame = () => {
   // Stop game.
 }
 
-const initializeSocket = (createStoreCb) => {
-  const socket = io()
+export const initializeSocket = (createStoreCb) => {
+  socket = io()
 
   socket.on("initialize", (initialState) => {
     const store = createStore(appReducer, initialState)
     createStoreCb(store);
 
     console.log("Connected to server socket");
-    socket.on(A.ADD_PLAYER, (data) => {
+    socket.on(C.ADD_PLAYER, (data) => {
       store.dispatch({
-        type: A.ADD_PLAYER,
+        type: C.ADD_PLAYER,
         payload: data
       })
     })
 
-    socket.on(A.REMOVE_PLAYER, (data) => {
+    socket.on(C.REMOVE_PLAYER, (data) => {
       store.dispatch({
-        type: A.REMOVE_PLAYER,
+        type: C.REMOVE_PLAYER,
         payload: data
       })
     })
 
     socket.on("UPDATE_PLAYER", (data) => {
       store.dispatch({
-        type: A.UPDATE_PLAYER,
+        type: C.UPDATE_PLAYER,
         payload: data
       })
     })
 
     socket.on("MOVE_BALL", (data) => {
       store.dispatch({
-        type: A.MOVE_PLAYER,
+        type: C.MOVE_PLAYER,
         payload: data
       })
     })
 
     socket.on("START_GAME", (data) => {
       store.dispatch({
-        type: A.START_GAME,
+        type: C.START_GAME,
         payload: data
       })
     })
 
     socket.on("STOP_GAME", (data) => {
       store.dispatch({
-        type: A.STOP_GAME,
+        type: C.STOP_GAME,
         payload: data
       })
     })
   })
 }
 
-export default initializeSocket
+export const getSocket = () => {
+  return socket;
+}
