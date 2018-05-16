@@ -53,7 +53,6 @@ export const initializeSocket = (createStoreCb) => {
     })
 
     socket.on("UPDATE_PLAYER", (data) => {
-      console.log('update player', data)
       store.dispatch({
         type: C.UPDATE_PLAYER,
         payload: data

@@ -49,7 +49,7 @@ io.on('connection', (socket) => {
         return __player__
       }
     })
-    console.info('Added Player', player)
+    console.info('Added Player', state)
     socket.broadcast.emit('ADD_PLAYER', state)
   })
 

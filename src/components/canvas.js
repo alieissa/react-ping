@@ -1,4 +1,4 @@
-//TODO: Draw canvas on component update
+//TODO: Clean up game board before rendering new state.
 
 import React, {Component} from 'react'
 import {CONF} from '../config'
@@ -30,10 +30,12 @@ class Canvas extends Component{
   }
 
   componentWillUpdate() {
+    // Clean up game board
   }
 
 
   componentDidUpdate() {
+    this.renderCanvas(this.props.leftPlayer, this.props.rightPlayer, this.props.ball)
   }
 
   addRightPlayer() {
@@ -52,7 +54,7 @@ class Canvas extends Component{
 
   addLeftPlayer() {
     const leftPlayer = {
-      position: 'right',
+      position: 'left',
       x: 0,
       y: CONF.CANVAS_HEIGHT / 2 - CONF.PADDLE_HEIGHT / 2
     }

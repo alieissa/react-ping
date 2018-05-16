@@ -5,13 +5,19 @@ import {combineReducers} from 'redux'
 const players = (state = [], {type, payload}=action) => {
   switch(type) {
     case C.ADD_PLAYER:
-      return [...state, payload]
+      return state.map(__player__ => {
+        if(__player__.position === payload.position) {
+          return Object.assign({}, __player__, payload)
+        }
+        else {
+          return __player__
+        }
+      })
     case C.REMOVE_PLAYER:
       return state.filter(player => player.id !== payload.id)
     case C.UPDATE_PLAYER:
-      let otherPlayer = state.filter(player => player.position !== payload.position)
-
-      return [...state, Object.assign({}, payload)]
+      let otherPlayers = state.filter(player => player.position !== payload.position)
+      return [...otherPlayers, Object.assign({}, payload)]
     default:
       return state
   }
