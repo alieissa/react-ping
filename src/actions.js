@@ -1,18 +1,38 @@
+//TODO: Clean up ADD_PLAYER action creator
+
 import {C} from './constants'
 import {getSocket} from './socket'
 
-export const addPlayer = (side) => {
-  getSocket().emit(C.ADD_PLAYER, {})
-  
+export const addPlayer = (player) => {
+  getSocket().emit(C.ADD_PLAYER, player)
+
   return {
     type: C.ADD_PLAYER,
     payload:   {
-        position:side,
+        position:player.position,
         id: null,
         name: "",
         score: 0,
-        x: -1,
-        y: -1
+        x: player.x,
+        y: player.y
     }
+  }
+}
+
+export const movePlayer = (player) => {
+  getSocket().emit(C.UPDATE_PLAYER, player)
+
+  return {
+    type: C.UPDATE_PLAYER,
+    payload: player
+  }
+}
+
+export const removePlayer = (player) => {
+  getSocket().emit(C.REMOVE_PLAYER, player)
+
+  return {
+    type: C.REMOVE_PLAYER,
+    payload: player
   }
 }

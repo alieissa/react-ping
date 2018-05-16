@@ -9,7 +9,7 @@ const players = (state = [], {type, payload}=action) => {
     case C.REMOVE_PLAYER:
       return state.filter(player => player.id !== payload.id)
     case C.UPDATE_PLAYER:
-      let otherPlayer = state.filter(player => player.id !== payload.id)
+      let otherPlayer = state.filter(player => player.position !== payload.position)
 
       return [...state, Object.assign({}, payload)]
     default:

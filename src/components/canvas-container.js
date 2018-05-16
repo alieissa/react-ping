@@ -1,6 +1,6 @@
 import {connect} from 'react-redux'
 import Canvas from './canvas'
-import {addPlayer} from '../actions'
+import {addPlayer, movePlayer, removePlayer} from '../actions'
 
 const mapStateToProps = (state) => {
   return {
@@ -12,8 +12,14 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    handleJoin: (side) => {
-      dispatch(addPlayer(side))
+    addPlayer: (player) => {
+      dispatch(addPlayer(player))
+    },
+    movePlayer: (player) => {
+      dispatch(movePlayer(player))
+    },
+    removePlayer: (player) => {
+      dispatch(removePlayer(player))
     }
   }
 }

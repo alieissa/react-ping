@@ -1,59 +1,104 @@
+//TODO: Draw canvas on component update
+
 import React, {Component} from 'react'
+import {CONF} from '../config'
 
 class Canvas extends Component{
 
   constructor() {
     super()
 
-    this.PADDLE_HEIGHT = 100
-    this.PADDLE_WIDTH = 10
-
     this.state = {
       playing: false,
       position: ''
     }
 
-    this.handleJoin = this.handleJoin.bind(this)
     this.renderCanvas = this.renderCanvas.bind(this)
+    this.addRightPlayer = this.addRightPlayer.bind(this)
+    this.addLeftPlayer = this.addLeftPlayer.bind(this)
     this.handleMouseMove = this.handleMouseMove.bind(this)
+    this.removeRightPlayer = this.removeRightPlayer.bind(this)
+    this.removeLeftPlayer = this.removeLeftPlayer.bind(this)
   }
+
   componentWillMount() {
 
   }
 
   componentDidMount() {
-    this.renderCanvas(this.props.leftPlayer)
+    this.renderCanvas(this.props.leftPlayer, this.props.rightPlayer, this.props.ball)
   }
 
   componentWillUpdate() {
-
   }
 
 
   componentDidUpdate() {
-
   }
 
-  handleMouseMove(evt) {
-    const playerLeftPos = {
-      x: 0,
-      y: evt.clientY - this.refs.canvasContainer.getBoundingClientRect().y
+  addRightPlayer() {
+    const rightPlayer = {
+      position: 'right',
+      x: CONF.CANVAS_WIDTH - CONF.PADDLE_WIDTH,
+      y: CONF.CANVAS_HEIGHT / 2 - CONF.PADDLE_HEIGHT / 2
     }
-
-    this.renderCanvas(playerLeftPos, {}, {})
-  }
-
-  handleJoin(playerSide) {
+    this.props.addPlayer(rightPlayer)
 
     this.setState({
       playing: true,
-      position: playerSide
+      position: 'right'
     })
-
-    this.props.handleJoin(playerSide)
   }
 
-  renderCanvas(lPlayer, rPlayer, ball) {
+  addLeftPlayer() {
+    const leftPlayer = {
+      position: 'right',
+      x: 0,
+      y: CONF.CANVAS_HEIGHT / 2 - CONF.PADDLE_HEIGHT / 2
+    }
+    this.props.addPlayer(leftPlayer)
+
+    this.setState({
+      playing: true,
+      position: 'left'
+    })
+  }
+
+  removeRightPlayer() {
+    this.props.removePlayer(this.props.rightPlayer)
+  }
+
+  removeLeftPlayer() {
+    this.props.removePlayer(this.props.leftPlayer)
+  }
+
+  handleMouseMove(evt) {
+    if(this.state.position === 'left' && this.state.playing) {
+      let leftPaddle = {
+        x: 0,
+        y: (evt.clientY - this.refs.canvasContainer.getBoundingClientRect().y) - CONF.PADDLE_HEIGHT / 2
+      }
+      this.renderCanvas(leftPaddle, this.props.rightPlayer, this.props.ball)
+
+      this.props.movePlayer(Object.assign(this.props.leftPlayer, leftPaddle))
+    }
+
+    if(this.state.position === 'right' && this.state.playing) {
+      let rightPaddle = {
+        x: CONF.CANVAS_WIDTH - CONF.PADDLE_WIDTH,
+        y: (evt.clientY - this.refs.canvasContainer.getBoundingClientRect().y) - CONF.PADDLE_HEIGHT / 2
+      }
+      this.renderCanvas(this.props.leftPlayer, rightPaddle, this.props.ball)
+
+      this.props.movePlayer(Object.assign(this.props.rightPlayer, rightPaddle))
+    }
+  }
+
+  isPlaying(side) {
+    return this.state.playing && this.state.position===side
+  }
+
+  renderCanvas(leftPlayer, rightPlayer, ball) {
     // Redraw canvas
     const cvs = this.refs.canvas
     const ctx = cvs.getContext("2d")
@@ -62,31 +107,42 @@ class Canvas extends Component{
 
     // left player
     ctx.fillStyle = 'green';
-    ctx.fillRect(0, lPlayer.y - this.PADDLE_HEIGHT / 2, 20, 100);
+    ctx.fillRect(leftPlayer.x, leftPlayer.y, CONF.PADDLE_WIDTH, CONF.PADDLE_HEIGHT);
 
     // right player
     ctx.fillStyle = 'blue'
-    ctx.fillRect(cvs.width - 10, 10, 10, 100);
+    ctx.fillRect(rightPlayer.x, rightPlayer.y, CONF.PADDLE_WIDTH, CONF.PADDLE_HEIGHT);
 
     // ball
     ctx.fillStyle = "black"
-    ctx.fillRect(cvs.width / 2, cvs.height / 2, 15, 15);
+    ctx.fillRect(ball.x, ball.y, CONF.BALL_RADIUS, CONF.BALL_RADIUS);
   }
 
   render() {
     return (
       <div className="App d-flex">
         <div className="d-flex flex-column justify-content-center">
-          <input type="text"/>
-          <button className="btn btn-primary joiner" onClick={() => this.handleJoin("left")}>Join</button>
-          <button className="btn btn-primary joiner">Exit</button>
+          <button className="btn btn-primary joiner"
+            style={{display: this.isPlaying("left") ? "none" : "block"}}
+            onClick={this.addLeftPlayer}>Join</button>
+
+          <button className="btn btn-primary joiner"
+            style={{display: this.isPlaying("left") ? "block" : "none"}}
+            onClick={this.removeLeftPlayer}>Exit</button>
         </div>
+
         <div ref="canvasContainer" className="canvasContainer" onMouseMove={this.handleMouseMove}>
           <canvas ref="canvas" width="400" height="400"></canvas>
         </div>
+
         <div className="d-flex flex-column justify-content-center">
-          <input type="text"/>
-          <button className="btn btn-primary joiner" onClick={() => this.handleJoin("right")}>Join</button>
+          <button className="btn btn-primary joiner"
+            style={{display: this.isPlaying("right") ? "none" : "block"}}
+            onClick={this.addRightPlayer}>Join</button>
+
+          <button className="btn btn-primary joiner"
+            style={{display: this.isPlaying("right") ? "block" : "none"}}
+            onClick={this.removeRightPlayer}>Exit</button>
         </div>
       </div>
     )
