@@ -1,5 +1,5 @@
 //TODO: Clean up game board before rendering new state.
-//TODO: Add move ball logic
+//TODO: Maybe better to have renderer in its own class
 
 import React, {Component} from 'react'
 import {CONF} from '../config'

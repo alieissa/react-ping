@@ -1,6 +1,6 @@
-//TODO: Map user action to dispatch
 //TODO: Activate player on join click
 //TODO: Logic for Game on/off state
+//TODO: Bring dispatchers here from Canvas component. It is doing too much
 //TODO: Distinguish players from watchers
 
 import React, { Component } from 'react';

@@ -1,9 +1,19 @@
+//TODO: Clean up all code
 const path = require("path")
 const express = require("express")
 const app = express()
 const http = require("http").Server(app)
 const io = require("socket.io")(http)
 
+
+const getRandomInt = (min, max) => {
+  min = Math.ceil(min)
+  max = Math.floor(max)
+  return Math.floor(Math.random() * (max - min)) + min
+}
+
+let dx = getRandomInt(8, 10)
+let dy = getRandomInt(8, 10)
 
 const state = {
   players: [
@@ -88,7 +98,13 @@ io.on('connection', (socket) => {
 
 setInterval(function () {
   if(state.game === 1) {
-    Object.assign(state.ball, {x: state.ball.x + 8, y: state.ball.y + 8})
+    if(state.ball.x >= 400 || state.ball.x < 0) {
+      dx = dx*-1
+    }
+    if(state.ball.y >= 400 || state.ball.y < 0) {
+      dy = dy*-1
+    }
+    Object.assign(state.ball, {x: state.ball.x + dx, y: state.ball.y + dy})
     io.sockets.emit('MOVE_BALL', state.ball)
   }
 }, 25);
