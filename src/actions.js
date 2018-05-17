@@ -36,3 +36,13 @@ export const removePlayer = (player) => {
     payload: player
   }
 }
+
+
+export const moveBall = (ball) => {
+  getSocket().emit(C.MOVE_BALL, ball)
+
+  return {
+    type: C.MOVE_BALL,
+    payload: ball
+  }
+}

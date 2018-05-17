@@ -1,10 +1,10 @@
 //TODO: Clean up game board before rendering new state.
+//TODO: Add move ball logic
 
 import React, {Component} from 'react'
 import {CONF} from '../config'
 
 class Canvas extends Component{
-
   constructor() {
     super()
 

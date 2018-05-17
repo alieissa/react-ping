@@ -38,6 +38,7 @@ export const initializeSocket = (createStoreCb) => {
     createStoreCb(store);
 
     console.log("Connected to server socket");
+
     socket.on(C.ADD_PLAYER, (data) => {
       store.dispatch({
         type: C.ADD_PLAYER,
@@ -52,16 +53,16 @@ export const initializeSocket = (createStoreCb) => {
       })
     })
 
-    socket.on("UPDATE_PLAYER", (data) => {
+    socket.on(C.UPDATE_PLAYER, (data) => {
       store.dispatch({
         type: C.UPDATE_PLAYER,
         payload: data
       })
     })
 
-    socket.on("MOVE_BALL", (data) => {
+    socket.on(C.MOVE_BALL, (data) => {
       store.dispatch({
-        type: C.MOVE_PLAYER,
+        type: C.MOVE_BALL,
         payload: data
       })
     })

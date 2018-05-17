@@ -26,10 +26,10 @@ const state = {
     }
   ],
   ball: {
-    x: 200,
-    y: 200
+    x: 0,
+    y: 0
   },
-  game: 0
+  game: 1
 }
 
 app.use('/', express.static("dist"))
@@ -49,7 +49,7 @@ io.on('connection', (socket) => {
         return __player__
       }
     })
-    console.info('Added Player', state)
+
     socket.broadcast.emit('ADD_PLAYER', state)
   })
 
@@ -63,7 +63,6 @@ io.on('connection', (socket) => {
         return __player__
       }
     })
-    console.info('Removed Player', state.players)
     socket.broadcast.emit(state)
   })
 
@@ -87,6 +86,12 @@ io.on('connection', (socket) => {
   })
 });
 
+setInterval(function () {
+  if(state.game === 1) {
+    Object.assign(state.ball, {x: state.ball.x + 8, y: state.ball.y + 8})
+    io.sockets.emit('MOVE_BALL', state.ball)
+  }
+}, 25);
 http.listen(3000, () => {
   console.log("Listening on port 3000")
 })

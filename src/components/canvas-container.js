@@ -1,12 +1,17 @@
 import {connect} from 'react-redux'
 import Canvas from './canvas'
-import {addPlayer, movePlayer, removePlayer} from '../actions'
+import {
+  addPlayer,
+  movePlayer,
+  removePlayer,
+  moveBall
+ } from '../actions'
 
 const mapStateToProps = (state) => {
   return {
     leftPlayer: state.players.find(player => player.position === 'left'),
     rightPlayer: state.players.find(player => player.position === 'right'),
-    ball: state.ball
+    ball: Object.assign({}, state.ball)
   }
 }
 
@@ -20,6 +25,9 @@ const mapDispatchToProps = (dispatch) => {
     },
     removePlayer: (player) => {
       dispatch(removePlayer(player))
+    },
+    moveBall: (ball) => {
+      dispatch(moveBall(ball))
     }
   }
 }
