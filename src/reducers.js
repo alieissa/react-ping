@@ -1,11 +1,11 @@
-//TODO: Fix remove player reducer. Instead of remove player set id to null
+//TODO: General clean up
 import {C} from './constants'
 import {combineReducers} from 'redux'
 
 const players = (state = [], {type, payload}=action) => {
   switch(type) {
     case C.ADD_PLAYER:
-      return state.map(__player__ => {
+      const players = state.map(__player__ => {
         if(__player__.position === payload.position) {
           return Object.assign({}, __player__, payload)
         }
@@ -13,8 +13,16 @@ const players = (state = [], {type, payload}=action) => {
           return __player__
         }
       })
+      return players
     case C.REMOVE_PLAYER:
-      return state.filter(player => player.id !== payload.id)
+      return state.map(player => {
+        if(player.position === payload.position) {
+          return Object.assign({}, player, payload)
+        }
+        else {
+          return player
+        }
+      })
     case C.UPDATE_PLAYER:
       let otherPlayers = state.filter(player => player.position !== payload.position)
       return [...otherPlayers, Object.assign({}, payload)]

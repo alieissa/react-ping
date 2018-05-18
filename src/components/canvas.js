@@ -69,11 +69,23 @@ class Canvas extends Component{
   }
 
   removeRightPlayer() {
-    this.props.removePlayer(this.props.rightPlayer)
+    this.setState({
+      playing: false,
+      position: 'right'
+    })
+
+    const rightPlayer = Object.assign({}, this.props.rightPlayer, {id: null})
+    this.props.removePlayer(rightPlayer)
   }
 
   removeLeftPlayer() {
-    this.props.removePlayer(this.props.leftPlayer)
+    this.setState({
+      playing: false,
+      position: 'left'
+    })
+
+    const leftPlayer = Object.assign({}, this.props.leftPlayer, {id: null})
+    this.props.removePlayer(leftPlayer)
   }
 
   handleMouseMove(evt) {

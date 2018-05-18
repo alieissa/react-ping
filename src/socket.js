@@ -1,34 +1,9 @@
-// TODO: Look into socket "connect" event
+// TODO: Add socket disconnect logic
 import {createStore} from 'redux'
 import appReducer from './reducers'
 import {C} from './constants'
 
 var socket
-
-const handleAddPlayer = () => {
-  // Add player to state
-}
-
-const handleRemovPlayer = () => {
-  // Remove player from state
-}
-
-const handleMoveBall = () => {
-  // Move ball in canvas
-}
-
-const handleUpdatePlayer = () => {
-  // Update player score, x pos, or y pos
-}
-
-const handleStartGame = () => {
-  // Start game. Countdown from 5
-}
-
-
-const handleStopGame = () => {
-  // Stop game.
-}
 
 export const initializeSocket = (createStoreCb) => {
   socket = io()
@@ -39,7 +14,12 @@ export const initializeSocket = (createStoreCb) => {
 
     console.log("Connected to server socket");
 
+    socket.on('disconnect', () => {
+      // Add disconnect logic here
+    })
+    
     socket.on(C.ADD_PLAYER, (data) => {
+      console.log(data);
       store.dispatch({
         type: C.ADD_PLAYER,
         payload: data

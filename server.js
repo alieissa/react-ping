@@ -50,30 +50,31 @@ app.get("/", (req, res) => {
 io.on('connection', (socket) => {
   socket.emit('initialize', state);
 
-  socket.on("ADD_PLAYER", (player) => {
+  socket.on("ADD_PLAYER", (newPlayer) => {
     state.players = state.players.map((__player__, i) => {
-      if(__player__.position === player.position) {
-        return Object.assign({}, __player__, {id: i})
+      if(__player__.position === newPlayer.position) {
+        return Object.assign({}, __player__, newPlayer)
       }
       else {
         return __player__
       }
     })
-
-    socket.broadcast.emit('ADD_PLAYER', state)
+    console.log('Player added', state.players)
+    socket.broadcast.emit('ADD_PLAYER', newPlayer)
   })
 
   socket.on('REMOVE_PLAYER', (player) => {
     state.players = state.players.map(__player__ => {
-
-      if(__player__.id !== player.id) {
-        return Object.assign({}, __player__, {id: null})
+      if(__player__.position === player.position) {
+        return Object.assign({}, __player__,player)
       }
       else {
         return __player__
       }
     })
-    socket.broadcast.emit(state)
+    console.log('Player', player)
+    console.log('Removed player', state)
+    socket.broadcast.emit('REMOVE_PLAYER', player)
   })
 
 
