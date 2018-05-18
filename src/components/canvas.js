@@ -40,6 +40,7 @@ class Canvas extends Component{
 
   addRightPlayer() {
     const rightPlayer = {
+      id: 1,
       position: 'right',
       x: CONF.CANVAS_WIDTH - CONF.PADDLE_WIDTH,
       y: CONF.CANVAS_HEIGHT / 2 - CONF.PADDLE_HEIGHT / 2
@@ -54,6 +55,7 @@ class Canvas extends Component{
 
   addLeftPlayer() {
     const leftPlayer = {
+      id: 0,
       position: 'left',
       x: 0,
       y: CONF.CANVAS_HEIGHT / 2 - CONF.PADDLE_HEIGHT / 2
@@ -100,6 +102,25 @@ class Canvas extends Component{
     return this.state.playing && this.state.position===side
   }
 
+  isLeftAvailable() {
+    return this.props.leftPlayer.id === null && !this.state.playing
+  }
+
+  isRightAvailable() {
+    return this.props.rightPlayer.id === null && !this.state.playing
+  }
+
+
+  isRightPlaying() {
+    const isPlaying = this.props.rightPlayer.id !== null && this.state.playing && this.state.position === 'right'
+    return isPlaying
+  }
+
+  isLeftPlaying() {
+    const isPlaying = this.props.leftPlayer.id !== null && this.state.playing && this.state.position === 'left'
+    return isPlaying
+  }
+
   renderCanvas(leftPlayer, rightPlayer, ball) {
     // Redraw canvas
     const cvs = this.refs.canvas
@@ -125,11 +146,11 @@ class Canvas extends Component{
       <div className="App d-flex">
         <div className="d-flex flex-column justify-content-center">
           <button className="btn btn-primary joiner"
-            style={{display: this.isPlaying("left") ? "none" : "block"}}
+            style={{display: this.isLeftAvailable() ? "block" : "none"}}
             onClick={this.addLeftPlayer}>Join</button>
 
           <button className="btn btn-primary joiner"
-            style={{display: this.isPlaying("left") ? "block" : "none"}}
+            style={{display: this.isLeftPlaying() ? "block" : "none"}}
             onClick={this.removeLeftPlayer}>Exit</button>
         </div>
 
@@ -139,11 +160,11 @@ class Canvas extends Component{
 
         <div className="d-flex flex-column justify-content-center">
           <button className="btn btn-primary joiner"
-            style={{display: this.isPlaying("right") ? "none" : "block"}}
+            style={{display: this.isRightAvailable() ? "block" : "none"}}
             onClick={this.addRightPlayer}>Join</button>
 
           <button className="btn btn-primary joiner"
-            style={{display: this.isPlaying("right") ? "block" : "none"}}
+            style={{display: this.isRightPlaying() ? "block" : "none"}}
             onClick={this.removeRightPlayer}>Exit</button>
         </div>
       </div>

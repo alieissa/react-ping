@@ -10,7 +10,7 @@ export const addPlayer = (player) => {
     type: C.ADD_PLAYER,
     payload:   {
         position:player.position,
-        id: null,
+        id: player.id,
         name: "",
         score: 0,
         x: player.x,

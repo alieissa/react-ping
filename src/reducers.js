@@ -1,4 +1,4 @@
-//TODO: Why is object spread operator not working
+//TODO: Fix remove player reducer. Instead of remove player set id to null
 import {C} from './constants'
 import {combineReducers} from 'redux'
 
