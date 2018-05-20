@@ -1,5 +1,6 @@
 //TODO: Clean up game board before rendering new state.
 //TODO: Maybe better to have renderer in its own class
+//TODO: hydrate local state from localStorage
 
 import React, {Component} from 'react'
 import {CONF} from '../config'

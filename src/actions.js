@@ -29,7 +29,6 @@ export const movePlayer = (player) => {
 }
 
 export const removePlayer = (player) => {
-  console.log(player)
   getSocket().emit(C.REMOVE_PLAYER, player)
 
   return {
