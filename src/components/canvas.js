@@ -92,7 +92,7 @@ class Canvas extends Component{
   handleMouseMove(evt) {
     if(this.state.position === 'left' && this.state.playing) {
       let leftPaddle = {
-        x: 0,
+        x: 20,
         y: (evt.clientY - this.refs.canvasContainer.getBoundingClientRect().y) - CONF.PADDLE_HEIGHT / 2
       }
       this.renderCanvas(leftPaddle, this.props.rightPlayer, this.props.ball)
@@ -139,18 +139,26 @@ class Canvas extends Component{
     const cvs = this.refs.canvas
     const ctx = cvs.getContext("2d")
 
-    ctx.clearRect(0, 0, cvs.width, cvs.height)
+    ctx.fillStyle = "rgb(34, 34, 34)"
+    ctx.fillRect(0, 0, cvs.width, cvs.height)
+
+    ctx.beginPath();
+    ctx.setLineDash([5, 15]);
+    ctx.moveTo(300, 5);
+    ctx.lineTo(300, 400);
+    ctx.strokeStyle = "rgb(246, 223, 14)"
+    ctx.stroke();
 
     // left player
-    ctx.fillStyle = 'green';
+    ctx.fillStyle = 'rgb(246, 223, 14)';
     ctx.fillRect(leftPlayer.x, leftPlayer.y, CONF.PADDLE_WIDTH, CONF.PADDLE_HEIGHT);
 
     // right player
-    ctx.fillStyle = 'blue'
+    ctx.fillStyle = 'rgb(246, 223, 14)'
     ctx.fillRect(rightPlayer.x, rightPlayer.y, CONF.PADDLE_WIDTH, CONF.PADDLE_HEIGHT);
 
     // ball
-    ctx.fillStyle = "black"
+    ctx.fillStyle = "rgb(246, 223, 14)"
     ctx.fillRect(ball.x, ball.y, CONF.BALL_RADIUS, CONF.BALL_RADIUS);
   }
 
@@ -168,7 +176,7 @@ class Canvas extends Component{
         </div>
 
         <div ref="canvasContainer" className="canvasContainer" onMouseMove={this.handleMouseMove}>
-          <canvas ref="canvas" width="400" height="400"></canvas>
+          <canvas ref="canvas" width="600" height="400"></canvas>
         </div>
 
         <div className="d-flex flex-column justify-content-center">

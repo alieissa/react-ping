@@ -1,4 +1,5 @@
 //TODO: Clean up all code
+//TODO: Move server code to server dir
 const path = require("path")
 const express = require("express")
 const app = express()
@@ -23,7 +24,7 @@ const state = {
       id: null,
       name: "",
       score: 0,
-      x: 0,
+      x: 40,
       y: 100
     },
 
@@ -32,7 +33,7 @@ const state = {
       id: null,
       name: "",
       score: 0,
-      x: 380,
+      x: 560,
       y: 100
     }
   ],
