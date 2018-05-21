@@ -17,7 +17,7 @@ const players = (state = [], {type, payload}=action) => {
     case C.REMOVE_PLAYER:
       return state.map(player => {
         if(player.position === payload.position) {
-          return Object.assign({}, player, payload)
+          return Object.assign({}, player, payload, {id: null})
         }
         else {
           return player

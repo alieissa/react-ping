@@ -12,12 +12,10 @@ export const initializeSocket = (createStoreCb) => {
     const store = createStore(appReducer, initialState)
     createStoreCb(store);
 
-    console.log("Connected to server socket");
-
     socket.on('disconnect', () => {
       // Add disconnect logic here
     })
-    
+
     socket.on(C.ADD_PLAYER, (data) => {
       console.log(data);
       store.dispatch({

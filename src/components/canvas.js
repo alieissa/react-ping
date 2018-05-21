@@ -75,7 +75,8 @@ class Canvas extends Component{
       position: 'right'
     })
 
-    const rightPlayer = Object.assign({}, this.props.rightPlayer, {id: null})
+    const rightPlayer = Object.assign({}, this.props.rightPlayer)
+    // const rightPlayer = Object.assign({}, this.props.rightPlayer, {id: null})
     this.props.removePlayer(rightPlayer)
   }
 
@@ -85,7 +86,8 @@ class Canvas extends Component{
       position: 'left'
     })
 
-    const leftPlayer = Object.assign({}, this.props.leftPlayer, {id: null})
+    // const leftPlayer = Object.assign({}, this.props.leftPlayer, {id: null})
+    const leftPlayer = Object.assign({}, this.props.leftPlayer)
     this.props.removePlayer(leftPlayer)
   }
 
