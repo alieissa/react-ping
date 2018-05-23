@@ -1,6 +1,7 @@
 //TODO: Clean up game board before rendering new state.
 //TODO: Maybe better to have renderer in its own class
 //TODO: hydrate local state from localStorage
+//TODO: Look into using requestAnimationFrame usage to fix flicker problem
 
 import React, {Component} from 'react'
 import {CONF} from '../config'
@@ -43,7 +44,7 @@ class Canvas extends Component{
     const rightPlayer = {
       id: 1,
       position: 'right',
-      x: CONF.CANVAS_WIDTH - CONF.PADDLE_WIDTH,
+      x: CONF.CANVAS_WIDTH - CONF.PADDLE_WIDTH * 2,
       y: CONF.CANVAS_HEIGHT / 2 - CONF.PADDLE_HEIGHT / 2
     }
     this.props.addPlayer(rightPlayer)
@@ -76,7 +77,6 @@ class Canvas extends Component{
     })
 
     const rightPlayer = Object.assign({}, this.props.rightPlayer)
-    // const rightPlayer = Object.assign({}, this.props.rightPlayer, {id: null})
     this.props.removePlayer(rightPlayer)
   }
 
@@ -94,7 +94,7 @@ class Canvas extends Component{
   handleMouseMove(evt) {
     if(this.state.position === 'left' && this.state.playing) {
       let leftPaddle = {
-        x: 20,
+        x: CONF.PADDLE_WIDTH,
         y: (evt.clientY - this.refs.canvasContainer.getBoundingClientRect().y) - CONF.PADDLE_HEIGHT / 2
       }
       this.renderCanvas(leftPaddle, this.props.rightPlayer, this.props.ball)
@@ -104,7 +104,7 @@ class Canvas extends Component{
 
     if(this.state.position === 'right' && this.state.playing) {
       let rightPaddle = {
-        x: CONF.CANVAS_WIDTH - CONF.PADDLE_WIDTH,
+        x: CONF.CANVAS_WIDTH - CONF.PADDLE_WIDTH * 2,
         y: (evt.clientY - this.refs.canvasContainer.getBoundingClientRect().y) - CONF.PADDLE_HEIGHT / 2
       }
       this.renderCanvas(this.props.leftPlayer, rightPaddle, this.props.ball)
@@ -144,6 +144,7 @@ class Canvas extends Component{
     ctx.fillStyle = "rgb(34, 34, 34)"
     ctx.fillRect(0, 0, cvs.width, cvs.height)
 
+    //Divider
     ctx.beginPath();
     ctx.setLineDash([5, 15]);
     ctx.moveTo(300, 5);
@@ -151,8 +152,14 @@ class Canvas extends Component{
     ctx.strokeStyle = "rgb(246, 223, 14)"
     ctx.stroke();
 
+    // Score
+    ctx.font="20px Georgia";
+    ctx.fillStyle = 'rgb(255, 255, 255)'
+    ctx.fillText(leftPlayer.score, 150, 40);
+    ctx.fillText(rightPlayer.score, 450, 40);
+
     // left player
-    ctx.fillStyle = 'rgb(246, 223, 14)';
+    ctx.fillStyle = 'rgb(246, 223, 14)'
     ctx.fillRect(leftPlayer.x, leftPlayer.y, CONF.PADDLE_WIDTH, CONF.PADDLE_HEIGHT);
 
     // right player

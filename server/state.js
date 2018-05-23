@@ -16,8 +16,7 @@ module.exports = {
       "x": CONF.PADDLE_WIDTH,
       "y": CONF.CANVAS_HEIGHT / 2 - CONF.PADDLE_HEIGHT / 2
     },
-
-  {
+    {
       "position":"right",
       "id": null,
       "name": "",

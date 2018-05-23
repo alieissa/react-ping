@@ -1,5 +1,6 @@
 //TODO: Clean up all code
-//TODO: Update score logic
+//TODO: Create ball class
+
 const path = require('path')
 const express = require('express')
 const app = express()
@@ -14,31 +15,33 @@ app.get('/', (req, res) => {
   res.sendFile(path.join(__dirname, 'dist/index.html'))
 });
 
-
-let dx = _u.getRandomInt(1, 2)*-1
-// let dy = getRandomInt(8, 10)
-let dy = _u.getRandomInt(1, 2)*1
+let dx = _u.getRandomInt(8, 10)
+let dy = _u.getRandomInt(8, 10)
 
 io.on('connection', (socket) => {
   socket.emit('initialize', state);
 
   // Remove player when connection lost
   socket.on('disconnect', () => {
-    state.game = _u.isGameOn(state.players)
     state.players = _u.assignPlayerId(null, state.players, (player) => player.id === socket.id)
+    state.game = _u.isGameOn(state.players)
+    state.ball = _u.getCenterCoords()
   })
 
   socket.on('ADD_PLAYER', (newPlayer) => {
-    state.game = _u.isGameOn(state.players)
     state.players = _u.assignPlayerId(socket.id, state.players, (player) => newPlayer.position === player.position)
+    state.game = _u.isGameOn(state.players)
 
     socket.broadcast.emit('ADD_PLAYER', newPlayer)
   })
 
   socket.on('REMOVE_PLAYER', (player) => {
-    state.game = _u.isGameOn(state.players)
     state.players = _u.assignPlayerId(null, state.players, (__player__) => __player__.position === player.position)
-
+    state.game = _u.isGameOn(state.players)
+    state.ball = Object.assign({}, state.ball, _u.getCenterCoords())
+    dx = _u.getRandomInt(8, 10)
+    dy = _u.getRandomInt(8, 10)
+    io.sockets.emit('MOVE_BALL', state.ball)
     socket.broadcast.emit('REMOVE_PLAYER', player)
   })
 
@@ -59,6 +62,24 @@ const intervalRender = setInterval(function () {
   const rightPlayer = state.players[1]
   const ball = state.ball
 
+  if(state.game && _u.detectLeftScore(state.ball)) {
+    state.players[0] = Object.assign({}, state.players[0], {score: state.players[0].score + 1})
+    state.ball = Object.assign({}, state.ball, _u.getCenterCoords())
+    dx = _u.getRandomInt(8, 10)
+    dy = _u.getRandomInt(8, 10)
+    io.sockets.emit('MOVE_BALL', state.ball)
+    io.sockets.emit('UPDATE_PLAYER', state.players[0])
+  }
+
+  if(state.game && _u.detectRightScore(state.ball)) {
+    state.players[1] = Object.assign({}, state.players[1], {score: state.players[1].score + 1})
+    state.ball = Object.assign({}, state.ball, _u.getCenterCoords())
+    dx = _u.getRandomInt(8, 10)
+    dy = _u.getRandomInt(8, 10)
+    io.sockets.emit('MOVE_BALL', state.ball)
+    io.sockets.emit('UPDATE_PLAYER', state.players[1])
+  }
+
   if(state.game) {
     if(_u.detectLeftPaddle(state.ball, leftPlayer) || _u.detectRightPaddle(state.ball, rightPlayer)) {
       dx = dx*-1
@@ -69,14 +90,13 @@ const intervalRender = setInterval(function () {
     }
 
     state.ball = {
-      x: state.ball.x + dx ,
+      x: state.ball.x + dx,
       y: state.ball.y + dy
-
     }
 
     io.sockets.emit('MOVE_BALL', state.ball)
   }
-}, 25)
+}, 50)
 
 
 http.listen(3000, () => {
