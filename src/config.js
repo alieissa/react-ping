@@ -1,7 +1,10 @@
-export const CONF = {
+const CONF = {
   PADDLE_WIDTH: 20,
   PADDLE_HEIGHT: 100,
+  PADDLE_OFFSET: 20,
   CANVAS_HEIGHT: 400,
   CANVAS_WIDTH: 600,
   BALL_RADIUS: 20
 }
+
+export default CONF

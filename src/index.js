@@ -3,6 +3,7 @@ import ReactDOM from 'react-dom'
 import {Provider} from 'react-redux'
 import {createStore} from 'redux'
 import App from './App'
+import AppContainer from './App-container'
 import {initializeSocket} from './socket'
 import './index.css'
 
@@ -16,7 +17,7 @@ import './index.css'
 initializeSocket((store) => {
   ReactDOM.render(
     <Provider store={store}>
-      <App />
+      <AppContainer />
     </Provider>
     , document.getElementById('root')
   );

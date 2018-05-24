@@ -96,7 +96,7 @@ const intervalRender = setInterval(function () {
 
     io.sockets.emit('MOVE_BALL', state.ball)
   }
-}, 50)
+}, 1000/30)
 
 
 http.listen(3000, () => {

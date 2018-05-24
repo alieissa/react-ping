@@ -1,11 +1,11 @@
 import {connect} from 'react-redux'
-import Canvas from './canvas'
+import App from './App'
 import {
   addPlayer,
   movePlayer,
   removePlayer,
   moveBall
- } from '../actions'
+ } from './actions'
 
 const mapStateToProps = (state) => {
   return {
@@ -32,5 +32,5 @@ const mapDispatchToProps = (dispatch) => {
   }
 }
 
-const Container = connect(mapStateToProps, mapDispatchToProps)(Canvas)
+const Container = connect(mapStateToProps, mapDispatchToProps)(App)
 export default Container
